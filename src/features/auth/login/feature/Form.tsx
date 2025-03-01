@@ -10,9 +10,6 @@ import {
 import { Link } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
 
-// Library
-import Cookies from "js-cookie";
-
 // Interface
 import { FormValuesLogin } from "../../../../interface/auth/login/login";
 
@@ -77,7 +74,7 @@ const Form: React.FC = () => {
       }
       resetAuth;
       form.reset();
-      window.location.href = "/product";
+      window.location.href = dataAuth?.redirect || "/product";
     }
   }, [isSuccessAuth]);
 

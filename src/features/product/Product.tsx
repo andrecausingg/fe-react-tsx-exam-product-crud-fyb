@@ -1,10 +1,48 @@
-import React from "react";
+// React
+import React, { useEffect } from "react";
+
+// Component
 import TableProduct from "./features/TableProduct";
+import Buttons from "./features/Buttons";
+
+// Api
+import { useFetchProducts } from "../../api/product/product";
+
+// Redux
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import {
+  selectNameProduct,
+  setDataProduct,
+} from "../../redux/features/product/productSlice";
+import Filters from "./features/Filters";
 
 const Product: React.FC = () => {
+  // Redux
+  const dispatch = useAppDispatch();
+  const { paramsProducts } = useAppSelector(selectNameProduct);
+
+  // Products API
+  const {
+    data: dataApiProducts,
+    isLoading: isLoadingApiProducts,
+    isError: isErrorApiProducts,
+  } = useFetchProducts(paramsProducts);
+
+  // Campaign
+  useEffect(() => {
+    if (dataApiProducts) {
+      dispatch(setDataProduct(dataApiProducts));
+    }
+    // console.log("dataApiProducts", dataApiProducts);
+  }, [dataApiProducts, isLoadingApiProducts, isErrorApiProducts]);
+
   return (
     <>
-      <div className="container mx-auto">
+      <div className="min-h-screen flex justify-center items-center container mx-auto flex-col">
+        <div className="w-full  max-w-[700px]">
+          <Buttons />
+        </div>
+        <Filters />
         <TableProduct />
       </div>
     </>

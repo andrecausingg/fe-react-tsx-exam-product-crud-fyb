@@ -9,6 +9,7 @@ export interface InitialStateAndResponse {
   isDeleteModalProduct: boolean;
   // Select Data
   selectedDataProduct: selectedDataProduct;
+  isQueryingIndex: boolean;
 }
 
 // Params Product

@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from "../../../redux/hooks";
 import {
   selectNameProduct,
   setParamsProduct,
+  setQueryingIndex,
 } from "../../../redux/features/product/productSlice";
 import { IconCalendarMonth, IconSearch } from "@tabler/icons-react";
 
@@ -28,14 +29,16 @@ const Filters: React.FC = () => {
     if (value === "") {
       dispatch(setParamsProduct({ [key]: "" }));
     } else {
+      dispatch(setQueryingIndex(true));
       dispatch(setParamsProduct({ [key]: value }));
     }
   };
+  
 
   return (
     <>
       {/* Filter Fields */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-3 gap-2 my-4 w-full max-w-[700px]">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-3 gap-2 mt-2 w-full max-w-[700px]">
         {dataProduct?.filters.map((filter: any, filterIndex: any) =>
           filter?.details.map((field: any, fieldIndex: any) => {
             const commonProps = {

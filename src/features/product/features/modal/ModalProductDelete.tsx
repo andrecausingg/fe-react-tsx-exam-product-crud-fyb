@@ -7,6 +7,11 @@ import {
   NumberInput,
   TextInput,
   Button,
+  Skeleton,
+  Grid,
+  Card,
+  Text,
+  Image,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
@@ -21,6 +26,7 @@ import {
 
 // Api
 import { useApiProducts } from "../../../../api/product/product";
+import ProductDetails from "../ProductDetails";
 
 const ModalProductDelete: React.FC = () => {
   // Path
@@ -122,43 +128,7 @@ const ModalProductDelete: React.FC = () => {
         size={isMediumScreen ? "md" : ""}
         withCloseButton={false}
       >
-        <div className="flex gap-x-4">
-          <div>
-            {selectedDataProduct?.details &&
-            selectedDataProduct.details.length > 0 ? (
-              selectedDataProduct.details
-                .filter((detail: any) => detail.type === "file") // Filter out type "file"
-                .map((detail: any) => (
-                  <div key={detail.key}>
-                    <img
-                      src={`${pathStorageImage}${detail.value}`}
-                      alt={detail.label}
-                      width={120}
-                      height={120}
-                    />
-                  </div>
-                ))
-            ) : (
-              <p>No product details to display.</p>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-x-4">
-            {selectedDataProduct?.details &&
-            selectedDataProduct.details.length > 0 ? (
-              selectedDataProduct.details
-                .filter((detail: any) => detail.type !== "file") // Filter out type "file"
-                .map((detail: any) => (
-                  <div className="flex flex-col mt-2" key={detail.key}>
-                    <label className="font-bold">{detail.label}</label>
-                    <span>{detail.value}</span>
-                  </div>
-                ))
-            ) : (
-              <p>No product details to display.</p>
-            )}
-          </div>
-        </div>
+        <ProductDetails />
 
         <div className="flex gap-x-2 justify-center items-center mt-4">
           <Button color="red" onClick={() => handleModalClose()}>

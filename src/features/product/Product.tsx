@@ -13,8 +13,10 @@ import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import {
   selectNameProduct,
   setDataProduct,
+  setQueryingIndex,
 } from "../../redux/features/product/productSlice";
 import Filters from "./features/Filters";
+import Paginate from "./features/Paginate";
 
 const Product: React.FC = () => {
   // Redux
@@ -25,6 +27,7 @@ const Product: React.FC = () => {
   const {
     data: dataApiProducts,
     isLoading: isLoadingApiProducts,
+    isSuccess: isSuccessApiProducts,
     isError: isErrorApiProducts,
   } = useFetchProducts(paramsProducts);
 
@@ -33,17 +36,21 @@ const Product: React.FC = () => {
     if (dataApiProducts) {
       dispatch(setDataProduct(dataApiProducts));
     }
+    if (isSuccessApiProducts) {
+      dispatch(setQueryingIndex(false));
+    }
     // console.log("dataApiProducts", dataApiProducts);
   }, [dataApiProducts, isLoadingApiProducts, isErrorApiProducts]);
 
   return (
     <>
-      <div className="min-h-screen flex justify-center items-center container mx-auto flex-col">
-        <div className="w-full  max-w-[700px]">
+      <div className="min-h-screen flex justify-center items-center container mx-auto flex-col p-4 md:p-0">
+        <div className="w-full max-w-[700px]">
           <Buttons />
+          <Filters />
+          <Paginate />
+          <TableProduct />
         </div>
-        <Filters />
-        <TableProduct />
       </div>
     </>
   );

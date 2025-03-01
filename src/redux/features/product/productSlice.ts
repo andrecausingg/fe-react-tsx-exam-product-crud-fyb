@@ -40,6 +40,8 @@ const initialState: InitialStateAndResponse = {
     container: "",
     details: [],
   },
+  // Check if paginate | search
+  isQueryingIndex: false,
 };
 
 // Slice
@@ -75,6 +77,10 @@ export const productSlice = createSlice({
     setSelectedDataProduct: (state, action) => {
       state.selectedDataProduct = action.payload;
     },
+    // Detect if querying index
+    setQueryingIndex: (state, action) => {
+      state.isQueryingIndex = action.payload;
+    },
   },
 });
 
@@ -87,6 +93,7 @@ export const {
   setUpdateModalProduct,
   setDeleteModalProduct,
   setSelectedDataProduct,
+  setQueryingIndex,
 } = productSlice.actions;
 
 // State selector

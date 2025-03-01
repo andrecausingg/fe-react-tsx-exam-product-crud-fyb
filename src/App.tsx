@@ -1,35 +1,87 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useContext, useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
+// Router
+import routerConfig from "./router";
+
+// Context
+// import { EuDeviceContext } from "./context/EuDeviceContext";
+// import { TokenContext } from "./context/TokenContext";
+// import { SideNavContext } from "./context/SideNavContext";
+// import { InfoContext } from "./context/InfoContext";
+
+// Mantine
+import { LoadingOverlay } from "@mantine/core";
+
+const App: React.FC = () => {
+  // const { euDevice } = useContext(EuDeviceContext);
+  // const { token } = useContext(TokenContext);
+  // const { sideNav } = useContext(SideNavContext);
+  // const { info } = useContext(InfoContext);
+
+  const [selectedRoute, setSelectedRoute] = useState<string>("guest");
+
+  // useEffect(() => {
+  //   if (info?.role) {
+  //     setSelectedRoute(
+  //       info.role === "super_admin"
+  //         ? "superAdmin"
+  //         : info.role === "admin"
+  //         ? "admin"
+  //         : info.role === "lender"
+  //         ? "admin"
+  //         : info.role === "lender_staff"
+  //         ? "lenderStaff"
+  //         : "guest"
+  //     );
+  //   }
+  // }, [info]);
+
+  // useEffect(() => {
+  //   if (!token) {
+  //     window.location.href = "/";
+  //   }
+  // }, [token]);
+
+  const routingConfig = routerConfig[selectedRoute] || []; // Fallback to empty array if undefined
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      {/* {(euDevice === "" || euDevice === undefined) && (
+        <LoadingOverlay
+          visible={euDevice === ""}
+          zIndex={1000}
+          overlayProps={{ radius: "sm", blur: 2 }}
+        />
+      )} */}
 
-export default App
+      <BrowserRouter>
+        <Routes>
+          {routingConfig.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element}>
+              {route.children &&
+                route.children.map((childRoute, childIndex) => (
+                  <Route
+                    key={childIndex}
+                    path={childRoute.path}
+                    element={childRoute.element}
+                  >
+                    {childRoute.children &&
+                      childRoute.children.map((nestedRoute, nestedIndex) => (
+                        <Route
+                          key={nestedIndex}
+                          path={nestedRoute.path}
+                          element={nestedRoute.element}
+                        />
+                      ))}
+                  </Route>
+                ))}
+            </Route>
+          ))}
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+};
+
+export default App;
